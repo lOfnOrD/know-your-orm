@@ -1,0 +1,37 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="se.waymark.orm.jpa">
+        <description>
+            LIMA persistence unit
+        </description>
+
+        <properties>
+            <!-- properties overridden in InMemoryPersistence, remember to update accordingly -->
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//lima-test.csxbqfqu34bn.eu-west-1.rds.amazonaws.com:1521/lima" />
+            <property name="javax.persistence.jdbc.user" value="lima" />
+            <property name="javax.persistence.jdbc.password" value="vasagatan62" />
+
+            <property name="javax.persistence.validation.mode" value="ddl, callback" />
+
+            <!-- Oracle 11g uses Oracle10gDialect:
+                http://docs.jboss.org/hibernate/orm/4.1/manual/en-US/html/ch03.html#configuration-optional-dialects
+                -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="validate" />
+
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+
+            <!-- Store indexes in RAM since they're probably small-ish, change to "filesystem" and provide indexBase if needed... -->
+            <property name="hibernate.search.default.directory_provider" value="ram"/>
+            <!--<property name="hibernate.search.default.indexBase" value="path/to/lucene_indexes_dir"/>-->
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
