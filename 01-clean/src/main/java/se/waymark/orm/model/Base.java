@@ -1,12 +1,11 @@
 package se.waymark.orm.model;
 
 import java.io.Serializable;
-import org.joda.time.DateTime;
+import java.util.Date;
 
 public interface Base extends Serializable {
-    DateTime getCreated();
+    Date getCreated();
     String getCreatedBy();
-    DateTime getLastWritten();
+    Date getLastWritten();
     String getLastWrittenBy();
-    boolean isDeleted();
 }

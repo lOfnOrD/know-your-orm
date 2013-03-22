@@ -37,7 +37,7 @@ public class UserEntityUpdateTest {
             tx.persist(neverVisited);
             tx.commit();
         }
-        User.LimaUserID id = neverVisited.getLimaUserID();
+        User.UserID id = neverVisited.getUserID();
 
         persistence.resetForVerification();
         UserEntity verifyNeverVisited = persistence.find(UserEntity.class, id.getID());
@@ -58,7 +58,7 @@ public class UserEntityUpdateTest {
         UserEntity verifyVisitedOnce = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterFirstVisit = System.currentTimeMillis();
-        long actualMillisFirstVisit = verifyVisitedOnce.getCurrentVisit().getMillis();
+        long actualMillisFirstVisit = verifyVisitedOnce.getCurrentVisit().getTime();
         assertThat(verifyVisitedOnce.getLastVisit(), nullValue());
         assertThat(actualMillisFirstVisit, lessThanOrEqualTo(millisAfterFirstVisit));
 
@@ -75,8 +75,8 @@ public class UserEntityUpdateTest {
         UserEntity verifyVisitedAgain = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterSecondVisit = System.currentTimeMillis();
-        long actualMillisLastVisit = verifyVisitedAgain.getLastVisit().getMillis();
-        long actualMillisSecondVisit = verifyVisitedAgain.getCurrentVisit().getMillis();
+        long actualMillisLastVisit = verifyVisitedAgain.getLastVisit().getTime();
+        long actualMillisSecondVisit = verifyVisitedAgain.getCurrentVisit().getTime();
 
         assertThat(actualMillisLastVisit, is(actualMillisFirstVisit));
         assertThat(actualMillisLastVisit, lessThan(actualMillisSecondVisit));
@@ -95,7 +95,7 @@ public class UserEntityUpdateTest {
             tx.persist(neverFailed);
             tx.commit();
         }
-        User.LimaUserID id = neverFailed.getLimaUserID();
+        User.UserID id = neverFailed.getUserID();
 
         persistence.resetForVerification();
         UserEntity verifyNeverFailed = persistence.find(UserEntity.class, id.getID());
@@ -115,7 +115,7 @@ public class UserEntityUpdateTest {
         UserEntity verifyFailed = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterFirstVisit = System.currentTimeMillis();
-        long actualMillis = verifyFailed.getLastFailure().getMillis();
+        long actualMillis = verifyFailed.getLastFailure().getTime();
         assertThat(actualMillis, lessThanOrEqualTo(millisAfterFirstVisit));
     }
 

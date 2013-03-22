@@ -1,7 +1,7 @@
 package se.waymark.orm.model;
 
 import java.util.Set;
-import se.waymark.orm.model.fields.GlobalID;
+import se.waymark.orm.model.fields.ID;
 
 /**
  * Represents role stored in database, identities must match those of hardcoded <code>RoleEnum</code>s.
@@ -18,6 +18,6 @@ public interface Role extends Base {
 
     RoleEnum getRoleEnum();
 
-    interface LimaRoleID extends GlobalID {
+    interface LimaRoleID extends ID {
     }
 }

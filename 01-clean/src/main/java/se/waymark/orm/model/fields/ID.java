@@ -1,5 +1,5 @@
 package se.waymark.orm.model.fields;
 
-public interface GlobalID {
+public interface ID {
     long getID();
 }

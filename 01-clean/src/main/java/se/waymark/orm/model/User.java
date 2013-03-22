@@ -1,23 +1,23 @@
 package se.waymark.orm.model;
 
+import java.util.Date;
 import java.util.Set;
-import org.joda.time.DateTime;
-import se.waymark.orm.model.fields.GlobalID;
+import se.waymark.orm.model.fields.ID;
 
 public interface User extends Base {
 
-    LimaUserID getLimaUserID();
+    UserID getUserID();
     String getUserName();
     String getEncryptedPassword();
     boolean isActive();
-    DateTime getLastVisit();
-    DateTime getLastFailure();
-    DateTime getCurrentVisit();
+    Date getLastVisit();
+    Date getLastFailure();
+    Date getCurrentVisit();
 
     Set<? extends Role> getRoles();
 
     Person getPerson();
 
-    interface LimaUserID extends GlobalID {
+    interface UserID extends ID {
     }
 }

@@ -1,6 +1,6 @@
 package se.waymark.orm.jpa.fields;
 
-import se.waymark.orm.model.fields.GlobalID;
+import se.waymark.orm.model.fields.ID;
 
 /**
  * Cannot use {@code @EmbeddedId } with generated values
@@ -8,12 +8,12 @@ import se.waymark.orm.model.fields.GlobalID;
  * and {@code @IdClass } is EJB-2-horrible,
  * so wrap id field in subclass of this POJO.
  */
-public abstract class GlobalIDImpl implements GlobalID {
+public abstract class IDImpl implements ID {
 
     /**
      * NameField of generator specified in package-info
      */
-    public static final String GENERATOR_NAME = "GlobalID";
+    public static final String GENERATOR_NAME = "ID";
 
     /**
      * Strategy of generator specified in package-info
@@ -22,7 +22,7 @@ public abstract class GlobalIDImpl implements GlobalID {
 
     private long id;
 
-    public GlobalIDImpl(long id) {
+    public IDImpl(long id) {
         this.id = id;
     }
 
@@ -34,9 +34,9 @@ public abstract class GlobalIDImpl implements GlobalID {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GlobalID)) return false;
+        if (!(o instanceof ID)) return false;
 
-        GlobalID that = (GlobalID) o;
+        ID that = (ID) o;
 
         return id == that.getID();
 

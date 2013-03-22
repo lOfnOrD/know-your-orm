@@ -1,33 +1,25 @@
 package se.waymark.orm.jpa;
 
-import java.lang.annotation.Annotation;
 import java.util.Set;
-import javax.persistence.RollbackException;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import se.waymark.orm.model.Person;
 import se.waymark.orm.model.Role;
 import se.waymark.orm.model.User;
-import se.waymark.orm.model.Person;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.junit.matchers.JUnitMatchers.hasItems;
-import static se.waymark.orm.jpa.verifiers.BeanValidationViolationVerifier.verifySingleViolation;
-import static se.waymark.orm.jpa.verifiers.PersistenceConstraintViolationVerifier.verifyUniqueConstraintViolation;
 
 public class UserEntityPersistTest {
 
     private InMemoryPersistence persistence;
     private Person.PersonID person1ID;
-    private Person.PersonID person2ID;
 
     public UserEntityPersistTest() {
         super();
@@ -48,7 +40,6 @@ public class UserEntityPersistTest {
             tx.commit();
         }
         person1ID = person1.getPersonID();
-        person2ID = person2.getPersonID();
         persistence.resetForTest();
     }
 
@@ -57,62 +48,6 @@ public class UserEntityPersistTest {
         persistence.close();
     }
 
-    @Test
-    public void testPersist_nullName() throws Throwable {
-        String nullName = null;
-        UserEntity toPersist = new UserEntity(nullName, findPerson(person1ID));
-
-        //SUT
-        persistWithViolation(toPersist, "userName", nullName, NotNull.class);
-    }
-
-    @Test
-    public void testPersist_nullPerson() throws Throwable {
-        PersonEntity nullPerson = null;
-        UserEntity toPersist = new UserEntity("a UserName", nullPerson);
-
-        //SUT
-        persistWithViolation(toPersist, "person", nullPerson, NotNull.class);
-    }
-
-    @Test
-    public void testPersist_emptyName() throws Throwable {
-        String emptyName = "";
-        UserEntity toPersist = new UserEntity(emptyName, findPerson(person1ID));
-
-        //SUT
-        persistWithViolation(toPersist, "userName", emptyName, Size.class);
-    }
-
-    @Test
-    public void testPersist_nonUniqueName() throws Exception {
-        String sameName = "a UserName";
-        UserEntity toPersist1 = new UserEntity(sameName, findPerson(person1ID));
-        UserEntity toPersist2 = new UserEntity(sameName, findPerson(person2ID));
-
-        //SUT
-        try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(toPersist1);
-            tx.persist(toPersist2);
-            tx.commit();
-            fail("Expected rollback");
-        } catch (RollbackException e) {
-            verifyUniqueConstraintViolation(e, "UserName");
-        }
-    }
-
-    private void persistWithViolation(UserEntity toPersist,
-                                      String propertyPath,
-                                      Object invalidValue,
-                                      Class<? extends Annotation> annotationClass) throws Exception {
-        try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(toPersist);
-            tx.commit();
-            fail("Expected rollback");
-        } catch (RollbackException e) {
-            verifySingleViolation(e, propertyPath, invalidValue, annotationClass);
-        }
-    }
 
     @Test
     public void testPersist_happyPath() throws Exception {
@@ -126,7 +61,7 @@ public class UserEntityPersistTest {
             tx.commit();
         }
 
-        User.LimaUserID id = toPersist.getLimaUserID();
+        User.UserID id = toPersist.getUserID();
         persistence.resetForVerification();
 
         UserEntity reRead = persistence.find(UserEntity.class, id.getID());
@@ -150,7 +85,7 @@ public class UserEntityPersistTest {
             tx.commit();
         }
 
-        User.LimaUserID id = user.getLimaUserID();
+        User.UserID id = user.getUserID();
         persistence.resetForVerification();
 
         UserEntity reRead = persistence.find(UserEntity.class, id.getID());
@@ -176,7 +111,7 @@ public class UserEntityPersistTest {
             tx.commit();
         }
 
-        User.LimaUserID id = user.getLimaUserID();
+        User.UserID id = user.getUserID();
         Role.LimaRoleID role1id = role1.getLimaRoleID();
         Role.LimaRoleID role2id = role2.getLimaRoleID();
         Role.LimaRoleID role3id = role3.getLimaRoleID();

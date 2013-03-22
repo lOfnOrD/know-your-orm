@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-import se.waymark.orm.jpa.fields.GlobalIDImpl;
+import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Person;
 
 @Entity
@@ -20,7 +20,7 @@ import se.waymark.orm.model.Person;
 @Indexed
 public class PersonEntity extends BaseMappedSuperclass implements Person {
     @Id
-    @GeneratedValue(generator = GlobalIDImpl.GENERATOR_NAME)
+    @GeneratedValue(generator = IDImpl.GENERATOR_NAME)
     private long personID;
 
     @Basic(optional = true)
@@ -154,7 +154,7 @@ public class PersonEntity extends BaseMappedSuperclass implements Person {
         this.email = email;
     }
 
-    private class PersonIDImpl extends GlobalIDImpl implements PersonID {
+    private class PersonIDImpl extends IDImpl implements PersonID {
         public PersonIDImpl() {
             super(PersonEntity.this.personID);
         }

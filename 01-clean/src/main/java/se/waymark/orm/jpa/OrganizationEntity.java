@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import se.waymark.orm.jpa.fields.GlobalIDImpl;
+import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Organization;
 
 @Entity
@@ -22,7 +22,7 @@ import se.waymark.orm.model.Organization;
 )
 public class OrganizationEntity extends BaseMappedSuperclass implements Organization {
     @Id
-    @GeneratedValue(generator = GlobalIDImpl.GENERATOR_NAME)
+    @GeneratedValue(generator = IDImpl.GENERATOR_NAME)
     private long organizationID;
 
     @Basic(optional = false)
@@ -109,7 +109,7 @@ public class OrganizationEntity extends BaseMappedSuperclass implements Organiza
         this.organizationManager = organizationManager;
     }
 
-    private class OrganizationIDImpl extends GlobalIDImpl implements OrganizationID {
+    private class OrganizationIDImpl extends IDImpl implements OrganizationID {
         public OrganizationIDImpl() {
             super(OrganizationEntity.this.organizationID);
         }

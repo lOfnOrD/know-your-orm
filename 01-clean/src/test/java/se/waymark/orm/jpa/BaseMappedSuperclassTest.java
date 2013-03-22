@@ -1,5 +1,6 @@
 package se.waymark.orm.jpa;
 
+import java.util.Date;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +51,6 @@ public class BaseMappedSuperclassTest {
 
         verifyCreatedAndCreatedBy(unmodifiedRole);
         assertThat(unmodifiedRole.getLastWrittenBy(), nullValue());
-        assertThat(unmodifiedRole.isDeleted(), is(false));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class BaseMappedSuperclassTest {
         //SUT
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             RoleEntity unmodifiedRole = findPersistedRole();
-            unmodifiedRole.setDeleted(true);
+            unmodifiedRole.setRoleDescription("expected");
             tx.commit();
         }
 
@@ -69,11 +69,11 @@ public class BaseMappedSuperclassTest {
 
         RoleEntity updatedRole = findPersistedRole();
         verifyCreatedAndCreatedBy(updatedRole);
-        assertThat(updatedRole.isDeleted(), is(true));
+        assertThat(updatedRole.getRoleDescription(), is("expected"));
 
-        DateTime actualLastWritten = updatedRole.getLastWritten();
-        assertThat(actualLastWritten.getMillis(), greaterThan(afterPersist.getMillis()));
-        assertThat(actualLastWritten.getMillis(), greaterThan(beforeUpdate.getMillis()));
+        Date actualLastWritten = updatedRole.getLastWritten();
+        assertThat(actualLastWritten.getTime(), greaterThan(afterPersist.getMillis()));
+        assertThat(actualLastWritten.getTime(), greaterThan(beforeUpdate.getMillis()));
 
         // the assert below fails, probably because of timestamps being generated in different ways
 //        assertThat(actualLastWritten.getMillis(), lessThanOrEqualTo(DateTime.now().getMillis()));
@@ -82,9 +82,9 @@ public class BaseMappedSuperclassTest {
     }
 
     private void verifyCreatedAndCreatedBy(RoleEntity role) {
-        DateTime actualCreated = role.getCreated();
-        assertThat(actualCreated.getMillis(), greaterThanOrEqualTo(beforePersist.getMillis()));
-        assertThat(actualCreated.getMillis(), lessThanOrEqualTo(afterPersist.getMillis()));
+        Date actualCreated = role.getCreated();
+        assertThat(actualCreated.getTime(), greaterThanOrEqualTo(beforePersist.getMillis()));
+        assertThat(actualCreated.getTime(), lessThanOrEqualTo(afterPersist.getMillis()));
         assertThat(role.getCreatedBy(), is(System.getenv("USER")));
     }
 

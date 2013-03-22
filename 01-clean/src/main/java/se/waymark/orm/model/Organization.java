@@ -1,6 +1,6 @@
 package se.waymark.orm.model;
 
-import se.waymark.orm.model.fields.GlobalID;
+import se.waymark.orm.model.fields.ID;
 
 public interface Organization extends Base {
 
@@ -11,6 +11,6 @@ public interface Organization extends Base {
     Organization getMotherOrganization();
     Person getOrganizationManager();
 
-    interface OrganizationID extends GlobalID {
+    interface OrganizationID extends ID {
     }
 }

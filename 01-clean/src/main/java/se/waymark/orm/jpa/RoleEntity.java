@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import se.waymark.orm.jpa.fields.GlobalIDImpl;
+import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Role;
 import se.waymark.orm.model.RoleEnum;
 
@@ -83,7 +83,7 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
         return (int) (limaRoleID ^ (limaRoleID >>> 32));
     }
 
-    private class LimaRoleIDImpl extends GlobalIDImpl implements LimaRoleID {
+    private class LimaRoleIDImpl extends IDImpl implements LimaRoleID {
         public LimaRoleIDImpl() {
             super(RoleEntity.this.limaRoleID);
         }

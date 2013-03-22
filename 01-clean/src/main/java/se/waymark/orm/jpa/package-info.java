@@ -1,7 +1,7 @@
 @org.hibernate.annotations.GenericGenerators({
         @org.hibernate.annotations.GenericGenerator(
-                name = se.waymark.orm.jpa.fields.GlobalIDImpl.GENERATOR_NAME,
-                strategy = se.waymark.orm.jpa.fields.GlobalIDImpl.HIBERNATE_GENERATOR_STRATEGY)
+                name = IDImpl.GENERATOR_NAME,
+                strategy = IDImpl.HIBERNATE_GENERATOR_STRATEGY)
 })
 
 /**
@@ -9,3 +9,4 @@
  */
 package se.waymark.orm.jpa;
 
+import se.waymark.orm.jpa.fields.IDImpl;
