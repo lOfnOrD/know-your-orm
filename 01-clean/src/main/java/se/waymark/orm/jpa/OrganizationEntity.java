@@ -5,48 +5,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Organization;
 
 @Entity
-@Table(name = "Organization")
-@org.hibernate.validator.constraints.ScriptAssert(
-        lang = "javascript",
-        script = "!_this.equals(_this.motherOrganization)",
-        message = "Organization cannot be the mother of itself"
-)
 public class OrganizationEntity extends BaseMappedSuperclass implements Organization {
     @Id
-    @GeneratedValue(generator = IDImpl.GENERATOR_NAME)
+    @GeneratedValue
     private long organizationID;
 
     @Basic(optional = false)
     @Column(unique = true)
-    @NotNull
-    @Size(min = 1, max = 255)
     private String organizationName;
 
-    @Size(max = 2000)
     private String organizationDescription;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "MotherOrganizationID")
     private OrganizationEntity motherOrganization;
 
     @ManyToOne(optional = true) // cannot create first organization without this being optional
-    @JoinColumn(name = "PersonID")
     private PersonEntity organizationManager;
 
     public OrganizationEntity(String organizationName) {
         this.organizationName = organizationName;
     }
 
-    @SuppressWarnings("UnusedDeclaration") //JPA
     protected OrganizationEntity() {
     }
 

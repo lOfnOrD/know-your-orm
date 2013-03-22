@@ -1,10 +1,7 @@
 package se.waymark.orm.jpa;
 
-import java.lang.annotation.Annotation;
 import javax.persistence.EntityExistsException;
 import javax.persistence.RollbackException;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
@@ -16,7 +13,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static se.waymark.orm.jpa.verifiers.BeanValidationViolationVerifier.verifySingleViolation;
 import static se.waymark.orm.jpa.verifiers.PersistenceConstraintViolationVerifier.verifyUniqueConstraintViolation;
 
 public class RoleEntityTest {
@@ -37,37 +33,6 @@ public class RoleEntityTest {
     @After
     public void tearDown() throws Exception {
         persistence.close();
-    }
-
-    @Test
-    public void testPersist_nullName() throws Throwable {
-        String nullName = null;
-        RoleEntity toPersist = new RoleEntity(1, nullName);
-
-        //SUT
-        persistWithViolation(toPersist, "roleName", nullName, NotNull.class);
-    }
-
-    @Test
-    public void testPersist_emptyName() throws Throwable {
-        String emptyName = "";
-        RoleEntity toPersist = new RoleEntity(1, emptyName);
-
-        //SUT
-        persistWithViolation(toPersist, "roleName", emptyName, Size.class);
-    }
-
-    private void persistWithViolation(RoleEntity toPersist,
-                                      String propertyPath,
-                                      String invalidValue,
-                                      Class<? extends Annotation> annotationClass) throws Exception {
-        try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(toPersist);
-            tx.commit();
-            fail("Expected rollback");
-        } catch (RollbackException e) {
-            verifySingleViolation(e, propertyPath, invalidValue, annotationClass);
-        }
     }
 
 
@@ -124,7 +89,7 @@ public class RoleEntityTest {
             emw.commit();
         }
 
-        Role.LimaRoleID id = toPersist.getLimaRoleID();
+        Role.RoleID id = toPersist.getRoleID();
         persistence.resetForVerification();
 
         RoleEntity reRead = persistence.find(RoleEntity.class, id.getID());

@@ -8,34 +8,27 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Role;
 import se.waymark.orm.model.RoleEnum;
 
 @Entity
-@Table(name = "Role")
 public class RoleEntity extends BaseMappedSuperclass implements Role {
 
     @Id // Not generated!
-    private long limaRoleID;
+    private long roleID;
 
     @Basic(optional = false)
     @Column(unique = true)
-    @NotNull
-    @Size(min = 1, max = 255)
     private String roleName;
 
-    @Size(max = 2000)
     private String roleDescription;
 
     @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> users;
 
-    public RoleEntity(long limaRoleID, String roleName) {
-        this.limaRoleID = limaRoleID;
+    public RoleEntity(long roleID, String roleName) {
+        this.roleID = roleID;
         this.roleName = roleName;
         this.users = new HashSet<>();
     }
@@ -44,8 +37,8 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
     }
 
     @Override
-    public LimaRoleID getLimaRoleID() {
-        return new LimaRoleIDImpl();
+    public RoleID getRoleID() {
+        return new RoleIDImpl();
     }
 
     @Override
@@ -65,7 +58,7 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
 
     @Override
     public RoleEnum getRoleEnum() {
-        return RoleEnum.findById(limaRoleID);
+        return RoleEnum.findById(roleID);
     }
 
     @Override
@@ -75,17 +68,17 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
 
         Role that = (Role) o;
 
-        return limaRoleID == that.getLimaRoleID().getID();
+        return roleID == that.getRoleID().getID();
     }
 
     @Override
     public int hashCode() {
-        return (int) (limaRoleID ^ (limaRoleID >>> 32));
+        return (int) (roleID ^ (roleID >>> 32));
     }
 
-    private class LimaRoleIDImpl extends IDImpl implements LimaRoleID {
-        public LimaRoleIDImpl() {
-            super(RoleEntity.this.limaRoleID);
+    private class RoleIDImpl extends IDImpl implements RoleID {
+        public RoleIDImpl() {
+            super(RoleEntity.this.roleID);
         }
     }
 

@@ -31,8 +31,8 @@ public class UserEntityPersistTest {
     public void setUp() throws Exception {
         persistence = new InMemoryPersistence();
         OrganizationEntity organization = new OrganizationEntity("Org");
-        PersonEntity person1 = new PersonEntity("Some One", "One", "Some", organization);
-        PersonEntity person2 = new PersonEntity("You Two", "Two", "You", organization);
+        PersonEntity person1 = new PersonEntity("Some One", organization);
+        PersonEntity person2 = new PersonEntity("You Two", organization);
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(organization);
             tx.persist(person1);
@@ -112,9 +112,9 @@ public class UserEntityPersistTest {
         }
 
         User.UserID id = user.getUserID();
-        Role.LimaRoleID role1id = role1.getLimaRoleID();
-        Role.LimaRoleID role2id = role2.getLimaRoleID();
-        Role.LimaRoleID role3id = role3.getLimaRoleID();
+        Role.RoleID role1id = role1.getRoleID();
+        Role.RoleID role2id = role2.getRoleID();
+        Role.RoleID role3id = role3.getRoleID();
         persistence.resetForVerification();
 
         UserEntity storedUser = persistence.find(UserEntity.class, id.getID());

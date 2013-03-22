@@ -8,7 +8,7 @@ import java.util.Map;
  * Note: <code>RoleEnum.*_STRING</code> constants (for use in annotations etc)
  * <em>must</em> correspond to enum names!
  *
- * Note: <code>RoleEnum.limaRoleID</code> <em>must</em> correspond to database <code>Role.LimaRoleID</code>.
+ * Note: <code>RoleEnum.limaRoleID</code> <em>must</em> correspond to database <code>Role.RoleID</code>.
  */
 public enum RoleEnum {
     READ_ONLY(1, "", 0),

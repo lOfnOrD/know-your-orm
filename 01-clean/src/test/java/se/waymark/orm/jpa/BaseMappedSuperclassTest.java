@@ -18,7 +18,7 @@ public class BaseMappedSuperclassTest {
     private InMemoryPersistence persistence;
     private DateTime beforePersist;
     private DateTime afterPersist;
-    private Role.LimaRoleID persistedRoleID;
+    private Role.RoleID persistedRoleID;
 
     @Before
     public void setUp() throws Exception {
@@ -31,7 +31,7 @@ public class BaseMappedSuperclassTest {
             RoleEntity role = new RoleEntity(1, "a RoleName");
             tx.persist(role);
             tx.commit();
-            persistedRoleID = role.getLimaRoleID();
+            persistedRoleID = role.getRoleID();
         }
 
         afterPersist = DateTime.now();

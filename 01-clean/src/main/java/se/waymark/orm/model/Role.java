@@ -8,7 +8,7 @@ import se.waymark.orm.model.fields.ID;
  */
 public interface Role extends Base {
 
-    LimaRoleID getLimaRoleID();
+    RoleID getRoleID();
 
     String getRoleName();
 
@@ -18,6 +18,6 @@ public interface Role extends Base {
 
     RoleEnum getRoleEnum();
 
-    interface LimaRoleID extends ID {
+    interface RoleID extends ID {
     }
 }

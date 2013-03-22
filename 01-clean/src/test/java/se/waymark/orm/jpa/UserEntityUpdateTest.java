@@ -28,7 +28,7 @@ public class UserEntityUpdateTest {
     @Test
     public void testUpdateVisitedTimestamps_happyPath() throws Exception {
         OrganizationEntity organization = new OrganizationEntity("Org");
-        PersonEntity person = new PersonEntity("A.N. Oob", "Oob", "A.N.", organization);
+        PersonEntity person = new PersonEntity("A.N. Oob", organization);
         UserEntity neverVisited = new UserEntity("NeverVisited", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -86,7 +86,7 @@ public class UserEntityUpdateTest {
     @Test
     public void testUpdateLastFailureTimestamp_happyPath() throws Exception {
         OrganizationEntity organization = new OrganizationEntity("Org");
-        PersonEntity person = new PersonEntity("Epic F. Ail", "Ail", "Epic F.", organization);
+        PersonEntity person = new PersonEntity("Epic F. Ail", organization);
         UserEntity neverFailed = new UserEntity("NeverFailed", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
