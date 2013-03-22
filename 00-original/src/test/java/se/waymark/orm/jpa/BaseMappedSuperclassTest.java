@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import se.waymark.orm.model.LimaRole;
+import se.waymark.orm.model.Role;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
@@ -12,12 +12,12 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class LimaBaseMappedSuperclassTest {
+public class BaseMappedSuperclassTest {
 
     private InMemoryPersistence persistence;
     private DateTime beforePersist;
     private DateTime afterPersist;
-    private LimaRole.LimaRoleID persistedRoleID;
+    private Role.LimaRoleID persistedRoleID;
 
     @Before
     public void setUp() throws Exception {
@@ -25,9 +25,9 @@ public class LimaBaseMappedSuperclassTest {
 
         beforePersist = DateTime.now();
 
-        // Use LimaRoleEntity as a guinea pig extender of LimaBaseMappedSuperclass
+        // Use RoleEntity as a guinea pig extender of BaseMappedSuperclass
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            LimaRoleEntity role = new LimaRoleEntity(1, "a RoleName");
+            RoleEntity role = new RoleEntity(1, "a RoleName");
             tx.persist(role);
             tx.commit();
             persistedRoleID = role.getLimaRoleID();
@@ -46,7 +46,7 @@ public class LimaBaseMappedSuperclassTest {
 
     @Test
     public void testAuditPropertiesAfterPersist() throws Exception {
-        LimaRoleEntity unmodifiedRole = findPersistedRole();
+        RoleEntity unmodifiedRole = findPersistedRole();
 
         verifyCreatedAndCreatedBy(unmodifiedRole);
         assertThat(unmodifiedRole.getLastWrittenBy(), nullValue());
@@ -60,14 +60,14 @@ public class LimaBaseMappedSuperclassTest {
 
         //SUT
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            LimaRoleEntity unmodifiedRole = findPersistedRole();
+            RoleEntity unmodifiedRole = findPersistedRole();
             unmodifiedRole.setDeleted(true);
             tx.commit();
         }
 
         persistence.resetForVerification();
 
-        LimaRoleEntity updatedRole = findPersistedRole();
+        RoleEntity updatedRole = findPersistedRole();
         verifyCreatedAndCreatedBy(updatedRole);
         assertThat(updatedRole.isDeleted(), is(true));
 
@@ -81,15 +81,15 @@ public class LimaBaseMappedSuperclassTest {
         assertThat(updatedRole.getLastWrittenBy(), is(System.getenv("USER")));
     }
 
-    private void verifyCreatedAndCreatedBy(LimaRoleEntity role) {
+    private void verifyCreatedAndCreatedBy(RoleEntity role) {
         DateTime actualCreated = role.getCreated();
         assertThat(actualCreated.getMillis(), greaterThanOrEqualTo(beforePersist.getMillis()));
         assertThat(actualCreated.getMillis(), lessThanOrEqualTo(afterPersist.getMillis()));
         assertThat(role.getCreatedBy(), is(System.getenv("USER")));
     }
 
-    private LimaRoleEntity findPersistedRole() {
-        return persistence.find(LimaRoleEntity.class, persistedRoleID.getID());
+    private RoleEntity findPersistedRole() {
+        return persistence.find(RoleEntity.class, persistedRoleID.getID());
     }
 
 }

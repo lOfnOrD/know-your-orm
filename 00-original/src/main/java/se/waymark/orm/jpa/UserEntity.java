@@ -16,11 +16,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.joda.time.DateTime;
 import se.waymark.orm.jpa.fields.GlobalIDImpl;
-import se.waymark.orm.model.LimaUser;
+import se.waymark.orm.model.User;
 
 @Entity
-@Table(name = "LimaUser")
-public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser {
+@Table(name = "User")
+public class UserEntity extends BaseMappedSuperclass implements User {
     @Id
     @GeneratedValue(generator = GlobalIDImpl.GENERATOR_NAME)
     private long limaUserID;
@@ -51,21 +51,21 @@ public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser
             joinColumns=@JoinColumn(name="LimaUserID"),
             inverseJoinColumns=@JoinColumn(name="LimaRoleID")
     )
-    private Set<LimaRoleEntity> roles;
+    private Set<RoleEntity> roles;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "PersonID")
     @NotNull
     private PersonEntity person;
 
-    public LimaUserEntity(String userName, PersonEntity person) {
+    public UserEntity(String userName, PersonEntity person) {
         this.userName = userName;
         this.person = person;
         this.active = true;
         this.roles = new HashSet<>();
     }
 
-    protected LimaUserEntity() {
+    protected UserEntity() {
     }
 
     @Override
@@ -104,7 +104,7 @@ public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser
     }
 
     @Override
-    public Set<LimaRoleEntity> getRoles() {
+    public Set<RoleEntity> getRoles() {
         return roles;
     }
     
@@ -116,9 +116,9 @@ public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LimaUser)) return false;
+        if (!(o instanceof User)) return false;
 
-        LimaUser that = (LimaUser) o;
+        User that = (User) o;
 
         LimaUserID thatLimaUserID = that.getLimaUserID();
         return limaUserID == thatLimaUserID.getID();
@@ -134,7 +134,7 @@ public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser
         this.userName = userName;
     }
     
-    public void setRoles(Set<LimaRoleEntity> roles) {
+    public void setRoles(Set<RoleEntity> roles) {
         this.roles = new HashSet<>();
 
         if (roles != null) {
@@ -165,7 +165,7 @@ public class LimaUserEntity extends LimaBaseMappedSuperclass implements LimaUser
 
     private class LimaUserIDImpl extends GlobalIDImpl implements LimaUserID {
         public LimaUserIDImpl() {
-            super(LimaUserEntity.this.limaUserID);
+            super(UserEntity.this.limaUserID);
         }
     }
 }

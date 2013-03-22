@@ -8,10 +8,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 import org.joda.time.DateTime;
-import se.waymark.orm.model.LimaBase;
+import se.waymark.orm.model.Base;
 
 @MappedSuperclass
-public abstract class LimaBaseMappedSuperclass implements LimaBase {
+public abstract class BaseMappedSuperclass implements Base {
 
     protected static final String USERTYPE_DATETIME = "org.jadira.usertype.dateandtime.joda.PersistentDateTime";
     protected static final String USERTYPE_LOCAL_DATE = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate";
@@ -37,7 +37,7 @@ public abstract class LimaBaseMappedSuperclass implements LimaBase {
     private Boolean deleted;
 
 
-    protected LimaBaseMappedSuperclass() {
+    protected BaseMappedSuperclass() {
     }
 
     @PrePersist

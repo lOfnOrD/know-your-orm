@@ -20,7 +20,7 @@ import se.waymark.orm.model.Organization;
         script = "!_this.equals(_this.motherOrganization)",
         message = "Organization cannot be the mother of itself"
 )
-public class OrganizationEntity extends LimaBaseMappedSuperclass implements Organization {
+public class OrganizationEntity extends BaseMappedSuperclass implements Organization {
     @Id
     @GeneratedValue(generator = GlobalIDImpl.GENERATOR_NAME)
     private long organizationID;

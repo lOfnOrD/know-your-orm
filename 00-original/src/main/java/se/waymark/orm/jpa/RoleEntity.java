@@ -12,12 +12,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import se.waymark.orm.jpa.fields.GlobalIDImpl;
-import se.waymark.orm.model.LimaRole;
 import se.waymark.orm.model.Role;
+import se.waymark.orm.model.RoleEnum;
 
 @Entity
-@Table(name = "LimaRole")
-public class LimaRoleEntity extends LimaBaseMappedSuperclass implements LimaRole {
+@Table(name = "Role")
+public class RoleEntity extends BaseMappedSuperclass implements Role {
 
     @Id // Not generated!
     private long limaRoleID;
@@ -32,15 +32,15 @@ public class LimaRoleEntity extends LimaBaseMappedSuperclass implements LimaRole
     private String roleDescription;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<LimaUserEntity> users;
+    private Set<UserEntity> users;
 
-    public LimaRoleEntity(long limaRoleID, String roleName) {
+    public RoleEntity(long limaRoleID, String roleName) {
         this.limaRoleID = limaRoleID;
         this.roleName = roleName;
         this.users = new HashSet<>();
     }
 
-    protected LimaRoleEntity() {
+    protected RoleEntity() {
     }
 
     @Override
@@ -59,21 +59,21 @@ public class LimaRoleEntity extends LimaBaseMappedSuperclass implements LimaRole
     }
 
     @Override
-    public Set<LimaUserEntity> getUsers() {
-        return Collections.unmodifiableSet(users); // owned by LimaUser => changes will not be stored
+    public Set<UserEntity> getUsers() {
+        return Collections.unmodifiableSet(users); // owned by User => changes will not be stored
     }
 
     @Override
-    public Role getRoleEnum() {
-        return Role.findById(limaRoleID);
+    public RoleEnum getRoleEnum() {
+        return RoleEnum.findById(limaRoleID);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LimaRole)) return false;
+        if (!(o instanceof Role)) return false;
 
-        LimaRole that = (LimaRole) o;
+        Role that = (Role) o;
 
         return limaRoleID == that.getLimaRoleID().getID();
     }
@@ -85,7 +85,7 @@ public class LimaRoleEntity extends LimaBaseMappedSuperclass implements LimaRole
 
     private class LimaRoleIDImpl extends GlobalIDImpl implements LimaRoleID {
         public LimaRoleIDImpl() {
-            super(LimaRoleEntity.this.limaRoleID);
+            super(RoleEntity.this.limaRoleID);
         }
     }
 

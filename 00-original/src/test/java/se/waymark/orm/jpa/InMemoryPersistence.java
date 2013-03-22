@@ -21,7 +21,7 @@ public class InMemoryPersistence implements AutoCloseable {
 
         Properties override = getInMemoryPersistenceProperties();
 
-        entityManagerFactory = Persistence.createEntityManagerFactory(LimaPersistenceUnit.PERSISTENCE_UNIT_NAME, override);
+        entityManagerFactory = Persistence.createEntityManagerFactory(PersistenceUnit.PERSISTENCE_UNIT_NAME, override);
         entityManager = entityManagerFactory.createEntityManager();
     }
 

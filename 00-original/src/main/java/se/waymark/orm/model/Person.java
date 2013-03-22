@@ -2,7 +2,7 @@ package se.waymark.orm.model;
 
 import se.waymark.orm.model.fields.GlobalID;
 
-public interface Person extends LimaBase {
+public interface Person extends Base {
 
     PersonID getPersonID();
     String getSwedbankPersonID();

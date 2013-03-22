@@ -18,7 +18,7 @@ import se.waymark.orm.model.Person;
 @Entity
 @Table(name = "Person")
 @Indexed
-public class PersonEntity extends LimaBaseMappedSuperclass implements Person {
+public class PersonEntity extends BaseMappedSuperclass implements Person {
     @Id
     @GeneratedValue(generator = GlobalIDImpl.GENERATOR_NAME)
     private long personID;

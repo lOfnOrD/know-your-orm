@@ -11,7 +11,7 @@ import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import se.waymark.orm.model.LimaRole;
+import se.waymark.orm.model.Role;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -19,11 +19,11 @@ import static org.mockito.Mockito.mock;
 import static se.waymark.orm.jpa.verifiers.BeanValidationViolationVerifier.verifySingleViolation;
 import static se.waymark.orm.jpa.verifiers.PersistenceConstraintViolationVerifier.verifyUniqueConstraintViolation;
 
-public class LimaRoleEntityTest {
+public class RoleEntityTest {
 
     private InMemoryPersistence persistence;
 
-    public LimaRoleEntityTest() {
+    public RoleEntityTest() {
         super();
         // Mute SqlExceptionHelper log
         Logger.getLogger(SqlExceptionHelper.class).setLevel(Level.FATAL);
@@ -42,7 +42,7 @@ public class LimaRoleEntityTest {
     @Test
     public void testPersist_nullName() throws Throwable {
         String nullName = null;
-        LimaRoleEntity toPersist = new LimaRoleEntity(1, nullName);
+        RoleEntity toPersist = new RoleEntity(1, nullName);
 
         //SUT
         persistWithViolation(toPersist, "roleName", nullName, NotNull.class);
@@ -51,13 +51,13 @@ public class LimaRoleEntityTest {
     @Test
     public void testPersist_emptyName() throws Throwable {
         String emptyName = "";
-        LimaRoleEntity toPersist = new LimaRoleEntity(1, emptyName);
+        RoleEntity toPersist = new RoleEntity(1, emptyName);
 
         //SUT
         persistWithViolation(toPersist, "roleName", emptyName, Size.class);
     }
 
-    private void persistWithViolation(LimaRoleEntity toPersist,
+    private void persistWithViolation(RoleEntity toPersist,
                                       String propertyPath,
                                       String invalidValue,
                                       Class<? extends Annotation> annotationClass) throws Exception {
@@ -74,8 +74,8 @@ public class LimaRoleEntityTest {
     @Test
     public void testPersist_nonUniqueID() throws Exception {
         int sameID = 1;
-        LimaRoleEntity toPersist1 = new LimaRoleEntity(sameID, "a RoleName");
-        LimaRoleEntity toPersist2 = new LimaRoleEntity(sameID, "another RoleName");
+        RoleEntity toPersist1 = new RoleEntity(sameID, "a RoleName");
+        RoleEntity toPersist2 = new RoleEntity(sameID, "another RoleName");
 
         // Persist first
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -95,8 +95,8 @@ public class LimaRoleEntityTest {
     @Test
     public void testPersist_nonUniqueName() throws Exception {
         String sameName = "a RoleName";
-        LimaRoleEntity toPersist1 = new LimaRoleEntity(1, sameName);
-        LimaRoleEntity toPersist2 = new LimaRoleEntity(2, sameName);
+        RoleEntity toPersist1 = new RoleEntity(1, sameName);
+        RoleEntity toPersist2 = new RoleEntity(2, sameName);
 
         //SUT
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -115,7 +115,7 @@ public class LimaRoleEntityTest {
         String roleName = "a RoleName";
         String roleDescription = "Some description";
 
-        LimaRoleEntity toPersist = new LimaRoleEntity(1, roleName);
+        RoleEntity toPersist = new RoleEntity(1, roleName);
         toPersist.setRoleDescription(roleDescription);
 
         //SUT
@@ -124,10 +124,10 @@ public class LimaRoleEntityTest {
             emw.commit();
         }
 
-        LimaRole.LimaRoleID id = toPersist.getLimaRoleID();
+        Role.LimaRoleID id = toPersist.getLimaRoleID();
         persistence.resetForVerification();
 
-        LimaRoleEntity reRead = persistence.find(LimaRoleEntity.class, id.getID());
+        RoleEntity reRead = persistence.find(RoleEntity.class, id.getID());
         assertThat(reRead.getRoleName(), is(roleName));
         assertThat(reRead.getRoleDescription(), is(roleDescription));
     }
@@ -135,8 +135,8 @@ public class LimaRoleEntityTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testUsers_unmodifiable() throws Exception {
-        LimaRoleEntity role = new LimaRoleEntity(1, "a RoleName");
-        LimaUserEntity user1 = new LimaUserEntity("user1", mock(PersonEntity.class));
+        RoleEntity role = new RoleEntity(1, "a RoleName");
+        UserEntity user1 = new UserEntity("user1", mock(PersonEntity.class));
 
         //SUT
         role.getUsers().add(user1);

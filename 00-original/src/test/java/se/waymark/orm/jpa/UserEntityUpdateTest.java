@@ -3,14 +3,14 @@ package se.waymark.orm.jpa;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import se.waymark.orm.model.LimaUser;
+import se.waymark.orm.model.User;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
-public class LimaUserEntityUpdateTest {
+public class UserEntityUpdateTest {
 
     private InMemoryPersistence persistence;
 
@@ -29,7 +29,7 @@ public class LimaUserEntityUpdateTest {
     public void testUpdateVisitedTimestamps_happyPath() throws Exception {
         OrganizationEntity organization = new OrganizationEntity("Org");
         PersonEntity person = new PersonEntity("A.N. Oob", "Oob", "A.N.", organization);
-        LimaUserEntity neverVisited = new LimaUserEntity("NeverVisited", person);
+        UserEntity neverVisited = new UserEntity("NeverVisited", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(organization);
@@ -37,16 +37,16 @@ public class LimaUserEntityUpdateTest {
             tx.persist(neverVisited);
             tx.commit();
         }
-        LimaUser.LimaUserID id = neverVisited.getLimaUserID();
+        User.LimaUserID id = neverVisited.getLimaUserID();
 
         persistence.resetForVerification();
-        LimaUserEntity verifyNeverVisited = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity verifyNeverVisited = persistence.find(UserEntity.class, id.getID());
 
         assertThat(verifyNeverVisited.getLastVisit(), nullValue());
         assertThat(verifyNeverVisited.getCurrentVisit(), nullValue());
 
         persistence.resetForTest();
-        LimaUserEntity visitOnce = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity visitOnce = persistence.find(UserEntity.class, id.getID());
 
         // Visit once
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -55,7 +55,7 @@ public class LimaUserEntityUpdateTest {
         }
 
         persistence.resetForVerification();
-        LimaUserEntity verifyVisitedOnce = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity verifyVisitedOnce = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterFirstVisit = System.currentTimeMillis();
         long actualMillisFirstVisit = verifyVisitedOnce.getCurrentVisit().getMillis();
@@ -63,7 +63,7 @@ public class LimaUserEntityUpdateTest {
         assertThat(actualMillisFirstVisit, lessThanOrEqualTo(millisAfterFirstVisit));
 
         persistence.resetForTest();
-        LimaUserEntity visitAgain = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity visitAgain = persistence.find(UserEntity.class, id.getID());
 
         // Visit again
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -72,7 +72,7 @@ public class LimaUserEntityUpdateTest {
         }
 
         persistence.resetForVerification();
-        LimaUserEntity verifyVisitedAgain = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity verifyVisitedAgain = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterSecondVisit = System.currentTimeMillis();
         long actualMillisLastVisit = verifyVisitedAgain.getLastVisit().getMillis();
@@ -87,7 +87,7 @@ public class LimaUserEntityUpdateTest {
     public void testUpdateLastFailureTimestamp_happyPath() throws Exception {
         OrganizationEntity organization = new OrganizationEntity("Org");
         PersonEntity person = new PersonEntity("Epic F. Ail", "Ail", "Epic F.", organization);
-        LimaUserEntity neverFailed = new LimaUserEntity("NeverFailed", person);
+        UserEntity neverFailed = new UserEntity("NeverFailed", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(organization);
@@ -95,15 +95,15 @@ public class LimaUserEntityUpdateTest {
             tx.persist(neverFailed);
             tx.commit();
         }
-        LimaUser.LimaUserID id = neverFailed.getLimaUserID();
+        User.LimaUserID id = neverFailed.getLimaUserID();
 
         persistence.resetForVerification();
-        LimaUserEntity verifyNeverFailed = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity verifyNeverFailed = persistence.find(UserEntity.class, id.getID());
 
         assertThat(verifyNeverFailed.getLastFailure(), nullValue());
 
         persistence.resetForTest();
-        LimaUserEntity failMe = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity failMe = persistence.find(UserEntity.class, id.getID());
 
         //SUT
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -112,7 +112,7 @@ public class LimaUserEntityUpdateTest {
         }
 
         persistence.resetForVerification();
-        LimaUserEntity verifyFailed = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity verifyFailed = persistence.find(UserEntity.class, id.getID());
 
         long millisAfterFirstVisit = System.currentTimeMillis();
         long actualMillis = verifyFailed.getLastFailure().getMillis();

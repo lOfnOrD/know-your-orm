@@ -11,8 +11,8 @@ import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import se.waymark.orm.model.LimaRole;
-import se.waymark.orm.model.LimaUser;
+import se.waymark.orm.model.Role;
+import se.waymark.orm.model.User;
 import se.waymark.orm.model.Person;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -23,13 +23,13 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 import static se.waymark.orm.jpa.verifiers.BeanValidationViolationVerifier.verifySingleViolation;
 import static se.waymark.orm.jpa.verifiers.PersistenceConstraintViolationVerifier.verifyUniqueConstraintViolation;
 
-public class LimaUserEntityPersistTest {
+public class UserEntityPersistTest {
 
     private InMemoryPersistence persistence;
     private Person.PersonID person1ID;
     private Person.PersonID person2ID;
 
-    public LimaUserEntityPersistTest() {
+    public UserEntityPersistTest() {
         super();
         // Mute SqlExceptionHelper log
         Logger.getLogger(SqlExceptionHelper.class).setLevel(Level.FATAL);
@@ -60,7 +60,7 @@ public class LimaUserEntityPersistTest {
     @Test
     public void testPersist_nullName() throws Throwable {
         String nullName = null;
-        LimaUserEntity toPersist = new LimaUserEntity(nullName, findPerson(person1ID));
+        UserEntity toPersist = new UserEntity(nullName, findPerson(person1ID));
 
         //SUT
         persistWithViolation(toPersist, "userName", nullName, NotNull.class);
@@ -69,7 +69,7 @@ public class LimaUserEntityPersistTest {
     @Test
     public void testPersist_nullPerson() throws Throwable {
         PersonEntity nullPerson = null;
-        LimaUserEntity toPersist = new LimaUserEntity("a UserName", nullPerson);
+        UserEntity toPersist = new UserEntity("a UserName", nullPerson);
 
         //SUT
         persistWithViolation(toPersist, "person", nullPerson, NotNull.class);
@@ -78,7 +78,7 @@ public class LimaUserEntityPersistTest {
     @Test
     public void testPersist_emptyName() throws Throwable {
         String emptyName = "";
-        LimaUserEntity toPersist = new LimaUserEntity(emptyName, findPerson(person1ID));
+        UserEntity toPersist = new UserEntity(emptyName, findPerson(person1ID));
 
         //SUT
         persistWithViolation(toPersist, "userName", emptyName, Size.class);
@@ -87,8 +87,8 @@ public class LimaUserEntityPersistTest {
     @Test
     public void testPersist_nonUniqueName() throws Exception {
         String sameName = "a UserName";
-        LimaUserEntity toPersist1 = new LimaUserEntity(sameName, findPerson(person1ID));
-        LimaUserEntity toPersist2 = new LimaUserEntity(sameName, findPerson(person2ID));
+        UserEntity toPersist1 = new UserEntity(sameName, findPerson(person1ID));
+        UserEntity toPersist2 = new UserEntity(sameName, findPerson(person2ID));
 
         //SUT
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
@@ -101,7 +101,7 @@ public class LimaUserEntityPersistTest {
         }
     }
 
-    private void persistWithViolation(LimaUserEntity toPersist,
+    private void persistWithViolation(UserEntity toPersist,
                                       String propertyPath,
                                       Object invalidValue,
                                       Class<? extends Annotation> annotationClass) throws Exception {
@@ -120,16 +120,16 @@ public class LimaUserEntityPersistTest {
         PersonEntity person = findPerson(person1ID);
 
         //SUT
-        LimaUserEntity toPersist = new LimaUserEntity(userName, person);
+        UserEntity toPersist = new UserEntity(userName, person);
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(toPersist);
             tx.commit();
         }
 
-        LimaUser.LimaUserID id = toPersist.getLimaUserID();
+        User.LimaUserID id = toPersist.getLimaUserID();
         persistence.resetForVerification();
 
-        LimaUserEntity reRead = persistence.find(LimaUserEntity.class, id.getID());
+        UserEntity reRead = persistence.find(UserEntity.class, id.getID());
         assertThat(reRead.getUserName(), is(userName));
         assertThat(reRead.getPerson(), is(person));
         assertThat(reRead.isActive(), is(true));
@@ -137,8 +137,8 @@ public class LimaUserEntityPersistTest {
 
     @Test
     public void testRoles_duplicateRoleOnlyStoredOnce() throws Exception {
-        LimaUserEntity user = new LimaUserEntity("a UserName", findPerson(person1ID));
-        LimaRoleEntity sameRole = new LimaRoleEntity(1, "same Role");
+        UserEntity user = new UserEntity("a UserName", findPerson(person1ID));
+        RoleEntity sameRole = new RoleEntity(1, "same RoleEnum");
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(user);
             tx.persist(sameRole);
@@ -150,11 +150,11 @@ public class LimaUserEntityPersistTest {
             tx.commit();
         }
 
-        LimaUser.LimaUserID id = user.getLimaUserID();
+        User.LimaUserID id = user.getLimaUserID();
         persistence.resetForVerification();
 
-        LimaUserEntity reRead = persistence.find(LimaUserEntity.class, id.getID());
-        Set<LimaRoleEntity> actualRoles = reRead.getRoles();
+        UserEntity reRead = persistence.find(UserEntity.class, id.getID());
+        Set<RoleEntity> actualRoles = reRead.getRoles();
         assertThat(actualRoles.size(), is(1));
         assertThat(actualRoles, hasItem(sameRole));
     }
@@ -162,10 +162,10 @@ public class LimaUserEntityPersistTest {
     @Test
     public void testRoles_happyPath() throws Exception {
 
-        LimaUserEntity user = new LimaUserEntity("a UserName", findPerson(person1ID));
-        LimaRoleEntity role1 = new LimaRoleEntity(1, "role1");
-        LimaRoleEntity role2 = new LimaRoleEntity(2, "role2");
-        LimaRoleEntity role3 = new LimaRoleEntity(3, "role3");
+        UserEntity user = new UserEntity("a UserName", findPerson(person1ID));
+        RoleEntity role1 = new RoleEntity(1, "role1");
+        RoleEntity role2 = new RoleEntity(2, "role2");
+        RoleEntity role3 = new RoleEntity(3, "role3");
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
             tx.persist(role1);
             tx.persist(role2);
@@ -176,18 +176,18 @@ public class LimaUserEntityPersistTest {
             tx.commit();
         }
 
-        LimaUser.LimaUserID id = user.getLimaUserID();
-        LimaRole.LimaRoleID role1id = role1.getLimaRoleID();
-        LimaRole.LimaRoleID role2id = role2.getLimaRoleID();
-        LimaRole.LimaRoleID role3id = role3.getLimaRoleID();
+        User.LimaUserID id = user.getLimaUserID();
+        Role.LimaRoleID role1id = role1.getLimaRoleID();
+        Role.LimaRoleID role2id = role2.getLimaRoleID();
+        Role.LimaRoleID role3id = role3.getLimaRoleID();
         persistence.resetForVerification();
 
-        LimaUserEntity storedUser = persistence.find(LimaUserEntity.class, id.getID());
-        LimaRoleEntity storedRole1 = persistence.find(LimaRoleEntity.class, role1id.getID());
-        LimaRoleEntity storedRole2 = persistence.find(LimaRoleEntity.class, role2id.getID());
-        LimaRoleEntity storedRole3 = persistence.find(LimaRoleEntity.class, role3id.getID());
+        UserEntity storedUser = persistence.find(UserEntity.class, id.getID());
+        RoleEntity storedRole1 = persistence.find(RoleEntity.class, role1id.getID());
+        RoleEntity storedRole2 = persistence.find(RoleEntity.class, role2id.getID());
+        RoleEntity storedRole3 = persistence.find(RoleEntity.class, role3id.getID());
 
-        Set<LimaRoleEntity> actualRoles = storedUser.getRoles();
+        Set<RoleEntity> actualRoles = storedUser.getRoles();
         assertThat(actualRoles.size(), is(2));
         assertThat(actualRoles, hasItems(storedRole1, storedRole3));
         assertThat(storedRole1.getUsers(), hasItem(storedUser));
