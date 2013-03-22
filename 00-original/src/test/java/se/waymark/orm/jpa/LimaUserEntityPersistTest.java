@@ -38,12 +38,10 @@ public class LimaUserEntityPersistTest {
     @Before
     public void setUp() throws Exception {
         persistence = new InMemoryPersistence();
-        CountryEntity residence = new CountryEntity(4, "LL", "Country", "Land");
-        OrganizationEntity organization = new OrganizationEntity("Org", residence);
+        OrganizationEntity organization = new OrganizationEntity("Org");
         PersonEntity person1 = new PersonEntity("Some One", "One", "Some", organization);
         PersonEntity person2 = new PersonEntity("You Two", "Two", "You", organization);
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(residence);
             tx.persist(organization);
             tx.persist(person1);
             tx.persist(person2);

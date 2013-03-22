@@ -34,11 +34,6 @@ public class OrganizationEntity extends LimaBaseMappedSuperclass implements Orga
     @Size(max = 2000)
     private String organizationDescription;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "CountryID")
-    @NotNull
-    private CountryEntity residence;
-
     @ManyToOne(optional = true)
     @JoinColumn(name = "MotherOrganizationID")
     private OrganizationEntity motherOrganization;
@@ -47,11 +42,11 @@ public class OrganizationEntity extends LimaBaseMappedSuperclass implements Orga
     @JoinColumn(name = "PersonID")
     private PersonEntity organizationManager;
 
-    public OrganizationEntity(String organizationName, CountryEntity residence) {
+    public OrganizationEntity(String organizationName) {
         this.organizationName = organizationName;
-        this.residence = residence;
     }
 
+    @SuppressWarnings("UnusedDeclaration") //JPA
     protected OrganizationEntity() {
     }
 
@@ -69,11 +64,6 @@ public class OrganizationEntity extends LimaBaseMappedSuperclass implements Orga
     @Override
     public String getOrganizationDescription() {
         return organizationDescription;
-    }
-
-    @Override
-    public CountryEntity getResidence() {
-        return residence;
     }
 
     @Override
@@ -117,10 +107,6 @@ public class OrganizationEntity extends LimaBaseMappedSuperclass implements Orga
 
     public void setOrganizationManager(PersonEntity organizationManager) {
         this.organizationManager = organizationManager;
-    }
-
-    public void setResidence(CountryEntity residence) {
-        this.residence = residence;
     }
 
     private class OrganizationIDImpl extends GlobalIDImpl implements OrganizationID {

@@ -34,10 +34,8 @@ public class PersonEntityTest {
     @Before
     public void setUp() throws Exception {
         persistence = new InMemoryPersistence();
-        CountryEntity residence = new CountryEntity(4, "LL", "Country", "Land");
-        OrganizationEntity organization = new OrganizationEntity("Org", residence);
+        OrganizationEntity organization = new OrganizationEntity("Org");
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(residence);
             tx.persist(organization);
             tx.commit();
         }

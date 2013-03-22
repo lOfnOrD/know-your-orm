@@ -8,7 +8,6 @@ public interface Organization extends LimaBase {
     String getOrganizationName();
     String getOrganizationDescription();
 
-    Country getResidence();
     Organization getMotherOrganization();
     Person getOrganizationManager();
 

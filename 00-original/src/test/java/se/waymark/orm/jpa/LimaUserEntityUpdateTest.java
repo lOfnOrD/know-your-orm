@@ -27,13 +27,11 @@ public class LimaUserEntityUpdateTest {
 
     @Test
     public void testUpdateVisitedTimestamps_happyPath() throws Exception {
-        CountryEntity residence = new CountryEntity(4, "LL", "Country", "Land");
-        OrganizationEntity organization = new OrganizationEntity("Org", residence);
+        OrganizationEntity organization = new OrganizationEntity("Org");
         PersonEntity person = new PersonEntity("A.N. Oob", "Oob", "A.N.", organization);
         LimaUserEntity neverVisited = new LimaUserEntity("NeverVisited", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(residence);
             tx.persist(organization);
             tx.persist(person);
             tx.persist(neverVisited);
@@ -87,13 +85,11 @@ public class LimaUserEntityUpdateTest {
 
     @Test
     public void testUpdateLastFailureTimestamp_happyPath() throws Exception {
-        CountryEntity residence = new CountryEntity(4, "LL", "Country", "Land");
-        OrganizationEntity organization = new OrganizationEntity("Org", residence);
+        OrganizationEntity organization = new OrganizationEntity("Org");
         PersonEntity person = new PersonEntity("Epic F. Ail", "Ail", "Epic F.", organization);
         LimaUserEntity neverFailed = new LimaUserEntity("NeverFailed", person);
 
         try (InMemoryPersistence.Tx tx = persistence.beginTx()) {
-            tx.persist(residence);
             tx.persist(organization);
             tx.persist(person);
             tx.persist(neverFailed);
