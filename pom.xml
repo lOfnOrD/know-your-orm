@@ -13,14 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- Project-wide external versions -->
-        <jpa2.version>1.0.0.Final</jpa2.version>
-        <log4j.version>1.2.17</log4j.version>
     </properties>
 
     <modules>
         <module>00-original</module>
+        <module>01-clean</module>
     </modules>
 
 
