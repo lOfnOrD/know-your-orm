@@ -18,6 +18,7 @@
     <modules>
         <module>00-original</module>
         <module>01-clean</module>
+        <module>02-eager</module>
     </modules>
 
 
