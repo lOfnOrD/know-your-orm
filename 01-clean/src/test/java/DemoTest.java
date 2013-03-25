@@ -2,6 +2,7 @@ import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -61,6 +62,27 @@ public class DemoTest {
         System.out.println("*** BEGIN find()");
         UserEntity user = emTest.find(UserEntity.class, userID.getID());
         System.out.println("*** END find()");
+
+        System.out.println("*** BEGIN toString()");
+        String s = user.toString();
+        System.out.println("*** END toString()");
+
+        System.out.println("Found: " + s);
+    }
+
+    @Test
+    public void testSomeJPQL() throws Exception {
+        Query query = emTest.createQuery(
+                "select u from se.waymark.orm.jpa.UserEntity u " +
+//                        "join fetch u.person p " +
+//                        "join fetch p.organization " +
+//                        "join fetch u.roles " +
+                        "where u.userName = :usr")
+                .setParameter("usr", "pelle");
+
+        System.out.println("*** BEGIN JPQL");
+        UserEntity user = (UserEntity) query.getSingleResult();
+        System.out.println("*** END JPQL");
 
         System.out.println("*** BEGIN toString()");
         String s = user.toString();
