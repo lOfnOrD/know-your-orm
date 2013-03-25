@@ -98,4 +98,15 @@ public class OrganizationEntity extends BaseMappedSuperclass implements Organiza
             super(OrganizationEntity.this.organizationID);
         }
     }
+
+    @Override
+    public String toString() {
+        return "OrganizationEntity{" +
+                "organizationID=" + organizationID +
+                ", organizationName='" + organizationName + '\'' +
+                ", organizationDescription='" + organizationDescription + '\'' +
+                ", motherOrganization=" + motherOrganization +
+                ", organizationManager=" + organizationManager +
+                '}';
+    }
 }

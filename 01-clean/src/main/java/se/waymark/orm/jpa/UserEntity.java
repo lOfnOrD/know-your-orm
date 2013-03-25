@@ -131,6 +131,21 @@ public class UserEntity extends BaseMappedSuperclass implements User {
         this.currentVisit = new Date();
     }
 
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
+                ", active=" + active +
+                ", lastVisit=" + lastVisit +
+                ", lastFailure=" + lastFailure +
+                ", currentVisit=" + currentVisit +
+                ", roles=" + roles +
+                ", person=" + person +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                '}';
+    }
+
     public void updateLastFailureTimestamp() {
         this.lastFailure = new Date();
     }

@@ -92,4 +92,14 @@ public class PersonEntity extends BaseMappedSuperclass implements Person {
             return super.equals(o);
         }
     }
+
+    @Override
+    public String toString() {
+        return "PersonEntity{" +
+                "personID=" + personID +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", organization=" + organization +
+                '}';
+    }
 }

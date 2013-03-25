@@ -85,4 +85,14 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
     }
+
+    @Override
+    public String toString() {
+        return "RoleEntity{" +
+                "roleID=" + roleID +
+                ", roleName='" + roleName + '\'' +
+                ", roleDescription='" + roleDescription + '\'' +
+//                ", users=" + users +
+                '}';
+    }
 }
