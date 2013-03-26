@@ -48,6 +48,10 @@ public class UserEntity extends BaseMappedSuperclass implements User {
     protected UserEntity() {
     }
 
+
+
+
+    
     @Override
     public UserID getUserID() {
         return new UserIDImpl();

@@ -35,6 +35,10 @@ public class OrganizationEntity extends BaseMappedSuperclass implements Organiza
     }
 
 
+
+
+
+
     @Override
     public OrganizationID getOrganizationID() {
         return new OrganizationIDImpl();

@@ -3,8 +3,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,6 @@ public class DemoTest {
     @Before
     public void setUp() throws Exception {
         Properties override = getInMemoryPersistenceProperties();
-        Logger.getLogger("org.hibernate.tool.hbm2ddl").setLevel(Level.FATAL);
         entityManagerFactory = Persistence.createEntityManagerFactory(PersistenceUnit.PERSISTENCE_UNIT_NAME, override);
 
         EntityManager emSetup = entityManagerFactory.createEntityManager();
@@ -50,7 +47,6 @@ public class DemoTest {
         user.getRoles().add(role2);
 
         emSetup.getTransaction().commit();
-
         userID = user.getUserID();
         emSetup.close();
 
@@ -73,7 +69,7 @@ public class DemoTest {
     @Test
     public void testSomeJPQL() throws Exception {
         Query query = emTest.createQuery(
-                "select u from se.waymark.orm.jpa.UserEntity u " +
+                "select u from UserEntity u " +
 //                        "join fetch u.person p " +
 //                        "join fetch p.organization " +
 //                        "join fetch u.roles " +

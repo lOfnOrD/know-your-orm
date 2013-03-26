@@ -1,10 +1,12 @@
 package se.waymark.orm.jpa;
 
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import se.waymark.orm.jpa.fields.IDImpl;
 import se.waymark.orm.model.Person;
 
@@ -19,6 +21,9 @@ public class PersonEntity extends BaseMappedSuperclass implements Person {
 
     private String email;
 
+    @OneToMany(mappedBy = "person")
+    private Collection<UserEntity> users;
+
     @ManyToOne(optional = false)
     private OrganizationEntity organization;
 
@@ -29,6 +34,9 @@ public class PersonEntity extends BaseMappedSuperclass implements Person {
 
     protected PersonEntity() {
     }
+
+
+
 
     @Override
     public PersonID getPersonID() {

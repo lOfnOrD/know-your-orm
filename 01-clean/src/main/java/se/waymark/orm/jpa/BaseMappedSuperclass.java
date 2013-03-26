@@ -35,6 +35,10 @@ public abstract class BaseMappedSuperclass implements Base {
         this.lastWrittenBy = System.getenv("USER");
     }
 
+
+
+
+
     @Override
     public Date getCreated() {
         return created;

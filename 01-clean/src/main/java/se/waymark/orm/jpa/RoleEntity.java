@@ -36,6 +36,10 @@ public class RoleEntity extends BaseMappedSuperclass implements Role {
     protected RoleEntity() {
     }
 
+
+
+
+
     @Override
     public RoleID getRoleID() {
         return new RoleIDImpl();
