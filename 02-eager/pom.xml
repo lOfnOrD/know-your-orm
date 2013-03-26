@@ -13,6 +13,8 @@
     <artifactId>02-eager</artifactId>
     <packaging>jar</packaging>
 
+    <description>Added eagerness and cascading of User.roles, and lazy Person.organization</description>
+
     <dependencies>
 
         <!-- JPA 2.0 api -->

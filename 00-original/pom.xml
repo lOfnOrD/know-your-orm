@@ -13,6 +13,8 @@
     <artifactId>00-original</artifactId>
     <packaging>jar</packaging>
 
+    <description>The original code with refactored names. Lots more annotations, and also Hibernate Search and Bean Validation.</description>
+
     <dependencies>
 
         <!-- JPA 2.0 api -->
